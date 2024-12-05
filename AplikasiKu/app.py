@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask
 from flask_mysqldb import MySQL
+
 
 
 app = Flask(__name__)
@@ -11,52 +12,55 @@ app.config["MYSQL_DB"] = "db_pekerjaan"
 mysql = MySQL(app)
 app.secret_key = 'secret'
 
-from AplikasiKu.models.jobs import get_jobs, add_jobs,explore as ex, add_pelamar, daftar_pelamar_by_job as dp,get_jobs_by_id as gj
+
+from AplikasiKu.controllers.jobs import login as log,register as reg, akun as ak,require_login,explore as exp,form_cari as fc, cari_kerja as ck,form_tambah as ft,form_pelamar as fp,daftar_pelamar as dafp,logout as lo,index as ix
 
 @app.route('/',methods=['GET','POST'])
 def index():
-    return render_template('index.html')
+    return ix()
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    return reg()
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return log()
+
+@app.route('/logout')
+def logout():
+    return lo()
+
+@app.route('/akun')
+def akun():
+    return ak()
+
+@app.before_request
+def before_request():
+    return require_login()
 
 @app.route('/explore')
 def explore():
-    pekerjaan=ex()
-    return render_template('explore.html', pekerjaan=pekerjaan)
+    return exp()
 
 @app.route('/form_cari')
 def form_cari():
-    return render_template('form_cari.html')
+    return fc()
 
 @app.route('/cari_kerja', methods=['POST'])
 def cari_kerja():
-    experience = request.form['experience']
-    jobs = get_jobs(experience)
-    return render_template('cari_kerja.html',jobs=jobs  )
+    return ck()
     
 @app.route('/form_tambah', methods=['GET','POST'])
 def form_tambah():
-    if request.method == 'POST':
-        perusahaan=request.form['perusahaan']
-        deskripsi=request.form['description']
-        requirement=request.form['requirement']
-        add_jobs(perusahaan,deskripsi,requirement)
-        return redirect(url_for('explore'))
-    return render_template('form_tambah.html')
+    return ft()
 
 @app.route('/form_pelamar/<int:pekerjaan_id>', methods=['GET','POST'])
 def form_pelamar(pekerjaan_id):
-    if request.method == 'POST':
-        nama=request.form['nama']
-        email=request.form['email']
-        pendidikan=request.form['pendidikan']
-        add_pelamar(nama,email,pendidikan,pekerjaan_id)
-        return redirect(url_for('explore'))
-    pekerjaan=gj(pekerjaan_id)
-    return render_template('form_pelamar.html',pekerjaan_id=pekerjaan_id ,pekerjaan=pekerjaan) 
+    return fp(pekerjaan_id) 
 
 @app.route('/daftar_pelamar/<int:pekerjaan_id>')
 def daftar_pelamar(pekerjaan_id):
-    pelamar=dp(pekerjaan_id)
-    pekerjaan=gj(pekerjaan_id)
-    return render_template('daftar_pelamar.html', pelamar=pelamar, pekerjaan=pekerjaan)
+    return dafp(pekerjaan_id)
 
 

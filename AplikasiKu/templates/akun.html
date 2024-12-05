@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Halo, {{ username }}!</h2>
+<h3>Pekerjaan yang telah Anda daftar:</h3>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nama</th>
+            <th>Pendidikan</th>
+            <th>Perusahaan</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in pekerjaan %}
+        <tr>
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>
+            <td>{{ p[2] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

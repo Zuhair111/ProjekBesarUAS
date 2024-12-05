@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2024 at 01:45 AM
+-- Generation Time: Dec 05, 2024 at 11:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,16 +32,9 @@ CREATE TABLE `daftar_pelamar` (
   `nama` varchar(256) NOT NULL,
   `email` varchar(256) NOT NULL,
   `pendidikan` text NOT NULL,
-  `pekerjaan_id` int(11) NOT NULL
+  `pekerjaan_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `daftar_pelamar`
---
-
-INSERT INTO `daftar_pelamar` (`id`, `nama`, `email`, `pendidikan`, `pekerjaan_id`) VALUES
-(1, 'andi', 'akun@mail.com', 'S1 Informatika', 1),
-(2, 'rizky', 'admin@123.com', 'S2 informatika', 2);
 
 -- --------------------------------------------------------
 
@@ -69,22 +62,22 @@ INSERT INTO `pekerjaan` (`id`, `Perusahaan`, `description`, `requirement`) VALUE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_data`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `user_data` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `experience` text NOT NULL
+  `username` varchar(255) NOT NULL,
+  `PASSWORD` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user_data`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `user_data` (`id`, `name`, `experience`) VALUES
-(14, 'ZUHAIRAHNAF', 'programmer'),
-(15, 'ZUHAIRAHNAF', 'koki');
+INSERT INTO `users` (`id`, `username`, `PASSWORD`, `email`) VALUES
+(2, 'zuhair', 'scrypt:32768:8:1$auEXHNZzToCfOxEa$ca0c0c7ae5300d3a398e05a3e3ddf28a86634f76a9832c6b538b6e1150c9cba3edeca22000cc2b5ff1f9302565d0b8c2dd62b2283528f338b8567fdb93ae7c4c', 'akun@mail.com');
 
 --
 -- Indexes for dumped tables
@@ -95,7 +88,8 @@ INSERT INTO `user_data` (`id`, `name`, `experience`) VALUES
 --
 ALTER TABLE `daftar_pelamar`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `pekerjaan_id` (`pekerjaan_id`);
+  ADD KEY `pekerjaan_id` (`pekerjaan_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `pekerjaan`
@@ -104,10 +98,12 @@ ALTER TABLE `pekerjaan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_data`
+-- Indexes for table `users`
 --
-ALTER TABLE `user_data`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -126,10 +122,10 @@ ALTER TABLE `pekerjaan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user_data`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `user_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -139,7 +135,8 @@ ALTER TABLE `user_data`
 -- Constraints for table `daftar_pelamar`
 --
 ALTER TABLE `daftar_pelamar`
-  ADD CONSTRAINT `daftar_pelamar_ibfk_1` FOREIGN KEY (`pekerjaan_id`) REFERENCES `pekerjaan` (`id`);
+  ADD CONSTRAINT `daftar_pelamar_ibfk_1` FOREIGN KEY (`pekerjaan_id`) REFERENCES `pekerjaan` (`id`),
+  ADD CONSTRAINT `daftar_pelamar_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
