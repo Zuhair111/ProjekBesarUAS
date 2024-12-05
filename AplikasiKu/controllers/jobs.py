@@ -1,5 +1,5 @@
 from flask import  render_template, request, redirect, url_for, session, flash
-from AplikasiKu.models.jobs import get_user_by_username, verify_password,create_user,get_user_pekerjaan,get_all_jobs,get_jobs_by_experience,add_jobs,add_pelamar,get_jobs_by_id,daftar_pelamar_by_job,explore as ex
+from AplikasiKu.models.jobs import get_user_by_username, verify_password,create_user,get_user_pekerjaan,get_all_jobs,get_jobs,add_jobs,add_pelamar,get_jobs_by_id,daftar_pelamar_by_job,explore as ex
 
 def index():
     return render_template('index.html')
@@ -60,7 +60,7 @@ def form_cari():
 
 def cari_kerja():
     experience = request.form['experience']
-    jobs = get_jobs_by_experience(experience)
+    jobs = get_jobs(experience)
     return render_template('cari_kerja.html', jobs=jobs)
 
 def form_tambah():

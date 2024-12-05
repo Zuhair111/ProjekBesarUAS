@@ -32,16 +32,15 @@ def get_user_pekerjaan(user_id):
 
 def get_all_jobs():
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM jobs")
+        cursor.execute("SELECT * FROM pekerjaan")
         jobs = cursor.fetchall()
         cursor.close()
         return jobs
 
 def get_jobs_by_experience(experience):
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM jobs WHERE experience_required <= %s", (experience,))
+        cursor.execute("SELECT * FROM pekerjaan WHERE requirement LIKE %s", (experience,))
         jobs = cursor.fetchall()
-        cursor.close()
         return jobs
 
 
@@ -55,8 +54,8 @@ def get_jobs(experience):
         cursor = mysql.connection.cursor()
         query = "SELECT * FROM pekerjaan WHERE requirement LIKE %s"
         cursor.execute(query, (f"%{experience}%",))
-        result = cursor.fetchall()
-        return result 
+        jobs = cursor.fetchall()
+        return jobs
 
 def get_jobs_by_id(pekerjaan_id):
         cursor=mysql.connection.cursor()
@@ -70,11 +69,11 @@ def add_jobs(perusahaan,description,requirement):
         mysql.connection.commit()
         cursor.close()
 
-def save_user_data(name, experience):
-        cursor = mysql.connection.cursor()
-        query = "INSERT INTO user_data (name, experience) VALUES (%s, %s)"
-        cursor.execute(query, (name, experience))
-        mysql.connection.commit()
+# def save_user_data(name, experience):
+#         cursor = mysql.connection.cursor()
+#         query = "INSERT INTO user_data (name, experience) VALUES (%s, %s)"
+#         cursor.execute(query, (name, experience))
+#         mysql.connection.commit()
 
 def add_pelamar(nama,email,pendidikan,pekerjaan_id,user_id):
         cursor=mysql.connection.cursor()
