@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Explore pekerjaanMu!</h2>
+<table border="1">
+    <thead>
+     <tr>
+        <th>Pekerjaan</th>
+        <th>deskripsi</th>
+        <th>requirement calon pekerja</th>
+        
+     </tr>
+    </thead>
+    <tbody>
+    {% for job in pekerjaan %}
+     <tr>
+        <td>{{ job[1] }} </td>
+        <td>{{ job[2] }} </td>
+        <td>{{ job[3] }} </td>
+        <td><a href="/form_pelamar/{{ job[0] }}">Daftar</a></td>
+        <td><a href="/daftar_pelamar/{{ job[0] }}">Lihat</a></td>
+     </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

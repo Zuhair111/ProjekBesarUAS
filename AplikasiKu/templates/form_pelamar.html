@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>form lamaran untuk {{ pekerjaan[1] }}</h2>
+<form method="POST" action="">
+    nama:<input type="text" name="nama" required><br>
+    email:<input type="text" name="email" required><br>
+    Pendidikan terakhir:<input type="text" name="pendidikan" required><br>
+    <button type="submit">Submit</button>
+</form>
+
+
+
+{% endblock %}
